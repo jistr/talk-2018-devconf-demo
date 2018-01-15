@@ -1,0 +1,51 @@
+- name: create extnet
+  os_network:
+    auth: "{{ os_auth }}"
+    name: extnet
+    external: true
+    provider_physical_network: datacentre
+    provider_network_type: flat
+
+- name: create extsubnet
+  os_subnet:
+    auth: "{{ os_auth }}"
+    name: extsubnet
+    network_name: extnet
+    allocation_pool_start: 192.168.24.129
+    allocation_pool_end: 192.168.24.150
+    cidr: 192.168.24.0/24
+    gateway_ip: 192.168.24.1
+
+- name: create demonet
+  os_network:
+    auth: "{{ os_auth }}"
+    name: demonet
+
+- name: create demosubnet
+  os_subnet:
+    auth: "{{ os_auth }}"
+    name: demosubnet
+    network_name: demonet
+    allocation_pool_start: 192.168.30.10
+    allocation_pool_end: 192.168.30.63
+    cidr: 192.168.30.0/24
+    gateway_ip: 192.168.30.1
+    dns_nameservers: "{{ dns_servers }}"
+
+- name: create demo router
+  os_router:
+    auth: "{{ os_auth }}"
+    name: demorouter
+    network: extnet
+    interfaces:
+      - demosubnet
+
+- name: fetch CentOS 7 cloud image
+  get_url:
+    dest: "{{ lookup('env', 'HOME') }}/centos7.qcow2"
+    url: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1801-01.qcow2"
+
+- name: upload CentOS 7 cloud image to glance
+  os_image:
+    name: centos7
+    filename: "{{ lookup('env', 'HOME') }}/centos7.qcow2"

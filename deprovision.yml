@@ -1,0 +1,3 @@
+- hosts: localhost
+  roles:
+    - { role: openstack_demo, playbook_action: deprovision }
