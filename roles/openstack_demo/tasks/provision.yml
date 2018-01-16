@@ -75,16 +75,16 @@
     - ingress
     - egress
 
-- name: fetch CentOS 7 cloud image
+- name: fetch Fedora cloud image
   get_url:
-    dest: "{{ lookup('env', 'HOME') }}/centos7.qcow2"
-    url: "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1801-01.qcow2"
+    dest: "{{ lookup('env', 'HOME') }}/fedora27.qcow2"
+    url: "https://download.fedoraproject.org/pub/fedora/linux/releases/27/CloudImages/x86_64/images/Fedora-Cloud-Base-27-1.6.x86_64.qcow2"
 
-- name: upload CentOS 7 cloud image to glance
+- name: upload Fedora cloud image to glance
   os_image:
     auth: "{{ os_auth }}"
-    name: centos7
-    filename: "{{ lookup('env', 'HOME') }}/centos7.qcow2"
+    name: fedora27
+    filename: "{{ lookup('env', 'HOME') }}/fedora27.qcow2"
 
 - name: create demo keypair
   os_keypair:
@@ -98,16 +98,9 @@
     name: "demo{{item}}"
     auto_ip: yes
     flavor: demoflavor
-    image: centos7
+    image: fedora27
     key_name: demokey
     network: demonet
     security_groups: demogroup
     timeout: 600
-    userdata: |
-      users:
-        - name: admin
-          gecos: admin
-          sudo: ALL=(ALL) NOPASSWD:ALL
-          ssh_authorized_keys:
-            - "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
   with_sequence: start=0 count={{server_count}}

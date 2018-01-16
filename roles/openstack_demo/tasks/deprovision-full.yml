@@ -13,9 +13,9 @@
     state: absent
 
 # keep the one of filesystem though, no sense in fetching it N times
-- name: delete CentOS 7 cloud image from glance
+- name: delete Fedora cloud image from glance
   os_image:
-    name: centos7
+    name: fedora27
     state: absent
 
 - name: delete demo flavor
