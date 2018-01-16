@@ -1,0 +1,55 @@
+- import_tasks: deprovision-servers.yml
+
+- name: delete demo security group
+  os_security_group:
+    auth: "{{ os_auth }}"
+    name: demogroup
+    state: absent
+
+- name: delete demo keypair
+  os_keypair:
+    auth: "{{ os_auth }}"
+    name: demokey
+    state: absent
+
+# keep the one of filesystem though, no sense in fetching it N times
+- name: delete CentOS 7 cloud image from glance
+  os_image:
+    name: centos7
+    state: absent
+
+- name: delete demo flavor
+  os_nova_flavor:
+    auth: "{{ os_auth }}"
+    name: demoflavor
+    state: absent
+
+- name: delete demo router
+  os_router:
+    auth: "{{ os_auth }}"
+    name: demorouter
+    state: absent
+
+- name: delete demo subnet
+  os_subnet:
+    auth: "{{ os_auth }}"
+    name: demosubnet
+    state: absent
+
+- name: delete demo net
+  os_network:
+    auth: "{{ os_auth }}"
+    name: demonet
+    state: absent
+
+- name: delete external subnet
+  os_subnet:
+    auth: "{{ os_auth }}"
+    name: extsubnet
+    state: absent
+
+- name: delete external net
+  os_network:
+    auth: "{{ os_auth }}"
+    name: extnet
+    state: absent

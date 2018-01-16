@@ -1,0 +1,8 @@
+- name: delete demo servers
+  os_server:
+    auth: "{{ os_auth }}"
+    name: "demo{{item}}"
+    state: absent
+    delete_fip: yes
+    timeout: 600
+  with_sequence: start=0 count={{server_count}}

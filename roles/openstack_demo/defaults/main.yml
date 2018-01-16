@@ -7,3 +7,4 @@ os_auth:
   project_name: "{{ lookup('env', 'OS_PROJECT_NAME') }}"
 
 dns_servers: "192.168.23.1"
+server_count: 2
